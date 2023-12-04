@@ -1,6 +1,6 @@
 # assignment
 
-A new Flutter project.
+It is a Flutter assignment project of Software Development-I Lab (CSE 1200) course.
 
 ## Getting Started
 

@@ -133,7 +133,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                         const Icon(Icons.star, size: 13),
-                        const SizedBox(width: 4), // Add spacing
+                        const SizedBox(width: 4),
                         Text(
                           "${(1000 * stars)}",
                           style: const TextStyle(
@@ -152,7 +152,7 @@ class ProductCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start, // Align content to the start
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
@@ -200,7 +200,10 @@ class ProductCard extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle the 'Buy Now' button click
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BuyNowPage()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.green,
@@ -212,6 +215,101 @@ class ProductCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class BuyNowPage extends StatelessWidget {
+  const BuyNowPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Buy Now'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // "Choose Payment Method" section
+            const Text(
+              'Choose Payment Method',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                PaymentMethodButton(imageAsset: 'assets/bkash.png', label: 'bKash'),
+                PaymentMethodButton(imageAsset: 'assets/rocket.png', label: 'Rocket'),
+                PaymentMethodButton(imageAsset: 'assets/visa.png', label: 'Visa'),
+                PaymentMethodButton(imageAsset: 'assets/mastercard.png', label: 'Mastercard'),
+                PaymentMethodButton(imageAsset: 'assets/amex.png', label: 'AmEx'),
+                // Add more payment method buttons as needed
+              ],
+            ),
+            const SizedBox(height: 32),
+            // Dropdown button
+            const Text(
+              'Select Payment Type',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            DropdownButton<String>(
+              isExpanded: true,
+              value: 'Credit Card',
+              onChanged: (String? newValue) {
+                // Handle dropdown value change
+              },
+              items: <String>['Credit Card', 'Debit Card', 'Net Banking', 'UPI', 'Other']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 32),
+            // "Buy" button
+            ElevatedButton(
+              onPressed: () {
+                // Handle the "Buy" button click
+                // This functionality is currently empty and should be implemented as needed
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
+              child: const Text('Buy'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PaymentMethodButton extends StatelessWidget {
+  final String imageAsset;
+  final String label;
+
+  const PaymentMethodButton({Key? key, required this.imageAsset, required this.label})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset(
+          imageAsset,
+          height: 50,
+          width: 50,
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(height: 8),
+        Text(label),
+      ],
     );
   }
 }

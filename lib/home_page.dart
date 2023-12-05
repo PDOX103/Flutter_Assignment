@@ -112,7 +112,7 @@ class ProductCard extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
-                  color: Colors.red,
+                  color: Colors.black,
                 ),
                 Positioned(
                   bottom: 13,
@@ -239,14 +239,13 @@ class BuyNowPage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                PaymentMethodButton(imageAsset: 'assets/bkash.png', label: 'bKash'),
-                PaymentMethodButton(imageAsset: 'assets/rocket.png', label: 'Rocket'),
-                PaymentMethodButton(imageAsset: 'assets/visa.png', label: 'Visa'),
-                PaymentMethodButton(imageAsset: 'assets/mastercard.png', label: 'Mastercard'),
-                PaymentMethodButton(imageAsset: 'assets/amex.png', label: 'AmEx'),
+                PaymentMethodButton(imageAsset: 'images/BKash.jpeg', label: 'bKash'),
+                PaymentMethodButton(imageAsset: 'images/rocket.jpeg', label: 'Rocket'),
+                PaymentMethodButton(imageAsset: 'images/visa.jpeg', label: 'Visa'),
+                PaymentMethodButton(imageAsset: 'images/mastercard.jpeg', label: 'Mastercard'),
                 // Add more payment method buttons as needed
               ],
             ),
@@ -263,7 +262,7 @@ class BuyNowPage extends StatelessWidget {
               onChanged: (String? newValue) {
                 // Handle dropdown value change
               },
-              items: <String>['Credit Card', 'Debit Card', 'Net Banking', 'UPI', 'Other']
+              items: <String>['BKash', 'Nagad', 'Rocket', 'Debit Card', 'Credit Card']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

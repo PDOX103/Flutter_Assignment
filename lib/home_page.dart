@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
         itemCount: 10,
         itemBuilder: (context, index) {
           return ProductCard(
+            index: index,
             name: watchNames[index],
             description: watchDescriptions[index],
             price: getRandomPrice(index),
@@ -60,7 +61,7 @@ class HomePage extends StatelessWidget {
 
   static List<String> watchNames = [
     "Rado",
-    "Nevi force",
+    "Neviforce",
     "Citizen",
     "Seiko",
     "Casio",
@@ -86,6 +87,7 @@ class HomePage extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
+  final int index;
   final String name;
   final String description;
   final double price;
@@ -94,6 +96,7 @@ class ProductCard extends StatelessWidget {
 
   const ProductCard({
     Key? key,
+    required this.index,
     required this.name,
     required this.description,
     required this.price,
@@ -111,8 +114,14 @@ class ProductCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 2,
             child: Stack(
               children: [
+                Image.asset(
+                  'images/watch${index + 1}.jpeg',
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
                 Container(
-                  color: Colors.black,
+                  color: Colors.black.withOpacity(0),
                 ),
                 Positioned(
                   bottom: 13,
@@ -202,7 +211,7 @@ class ProductCard extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BuyNowPage()),
+                      MaterialPageRoute(builder: (context) => const BuyNowPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -219,37 +228,25 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-class BuyNowPage extends StatelessWidget {
+class BuyNowPage extends StatefulWidget {
   const BuyNowPage({Key? key}) : super(key: key);
+
+  @override
+  _BuyNowPageState createState() => _BuyNowPageState();
+}
+
+class _BuyNowPageState extends State<BuyNowPage> {
+  String selectedPaymentType = 'Online Payment';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buy Now'),
-      ),
+      appBar: const CustomAppBar(title: 'Buy Now'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // "Choose Payment Method" section
-            const Text(
-              'Choose Payment Method',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                PaymentMethodButton(imageAsset: 'images/BKash.jpeg', label: 'bKash'),
-                PaymentMethodButton(imageAsset: 'images/rocket.jpeg', label: 'Rocket'),
-                PaymentMethodButton(imageAsset: 'images/visa.jpeg', label: 'Visa'),
-                PaymentMethodButton(imageAsset: 'images/mastercard.jpeg', label: 'Mastercard'),
-                // Add more payment method buttons as needed
-              ],
-            ),
-            const SizedBox(height: 32),
             // Dropdown button
             const Text(
               'Select Payment Type',
@@ -258,17 +255,38 @@ class BuyNowPage extends StatelessWidget {
             const SizedBox(height: 8),
             DropdownButton<String>(
               isExpanded: true,
-              value: 'Credit Card',
+              value: selectedPaymentType,
               onChanged: (String? newValue) {
-                // Handle dropdown value change
+                setState(() {
+                  selectedPaymentType = newValue!;
+                });
               },
-              items: <String>['BKash', 'Nagad', 'Rocket', 'Debit Card', 'Credit Card']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: <String>[
+                'Online Payment',
+                'Cash on Delivery',
+              ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
+            ),
+            const SizedBox(height: 32),
+            // "Choose Payment Method" section
+            const Text(
+              'Choose Payment Method',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                PaymentMethodButton(imageAsset: 'images/BKash.jpeg', label: 'bKash'),
+                PaymentMethodButton(imageAsset: 'images/rocket.jpeg', label: 'Rocket'),
+                PaymentMethodButton(imageAsset: 'images/visa.jpeg', label: 'Visa'),
+                PaymentMethodButton(imageAsset: 'images/mastercard.jpeg', label: 'Mastercard'),
+                // Add more payment method buttons as needed
+              ],
             ),
             const SizedBox(height: 32),
             // "Buy" button
@@ -289,7 +307,7 @@ class BuyNowPage extends StatelessWidget {
   }
 }
 
-class PaymentMethodButton extends StatelessWidget {
+class PaymentMethodButton extends StatefulWidget {
   final String imageAsset;
   final String label;
 
@@ -297,18 +315,68 @@ class PaymentMethodButton extends StatelessWidget {
       : super(key: key);
 
   @override
+  _PaymentMethodButtonState createState() => _PaymentMethodButtonState();
+}
+
+class _PaymentMethodButtonState extends State<PaymentMethodButton> {
+  bool isSelected = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.asset(
-          imageAsset,
-          height: 50,
-          width: 50,
-          fit: BoxFit.contain,
-        ),
-        const SizedBox(height: 8),
-        Text(label),
-      ],
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isSelected = !isSelected;
+        });
+      },
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: isSelected ? Colors.green : Colors.transparent,
+                width: 2.0,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Image.asset(
+              widget.imageAsset,
+              height: 50,
+              width: 50,
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            widget.label,
+            style: TextStyle(
+              color: isSelected ? Colors.green : Colors.black,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const CustomAppBar({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.amber,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

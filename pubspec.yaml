@@ -65,6 +65,16 @@ flutter:
     - images/rocket.jpeg
     - images/visa.jpeg
     - images/mastercard.jpeg
+    - images/watch1.jpeg
+    - images/watch2.jpeg
+    - images/watch3.jpeg
+    - images/watch4.jpeg
+    - images/watch5.jpeg
+    - images/watch6.jpeg
+    - images/watch7.jpeg
+    - images/watch8.jpeg
+    - images/watch9.jpeg
+    - images/watch10.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -278,7 +278,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 PaymentMethodButton(imageAsset: 'images/BKash.jpeg', label: 'bKash'),
